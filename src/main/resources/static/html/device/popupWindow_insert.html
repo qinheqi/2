@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>弹窗</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/message.css">
+</head>
+<style>.table-blue .layui-laypage .layui-laypage-curr .layui-laypage-em {
+    background-color: #1E9FFF
+}</style>
+<body>
+<script src="../../layui/layui.js"></script>
+<script src="../../js/vue.min.js"></script>
+<script src="../../js/jquery-3.6.0.min.js"></script>
+
+<div class="popupNrdiv" id="popupWindow_insert">
+    <!-- 查询条件 -->
+    <form action="" method="post" id="queryForm" name="queryForm" class="layui-form layui-form-pane1">
+
+        <div style="margin: 23px auto">
+            <label class="layui-form-label" style="width: 10%">类别</label>
+            <div class="layui-input-inline" style="width: 56%">
+                <select name="type" lay-filter="form_type">
+                    <option value="" selected="selected">语句类型</option>
+                    <option value="查询">查询</option>
+                    <option value="新增">新增</option>
+                    <option value="修改">修改</option>
+                    <option value="删除">删除</option>
+                </select>
+            </div>
+
+            <button @click="sql_submit" onclick="sql_submit()" type="button" class="layui-btn layui-btn-normal"
+                    style="width: 15%; height: 100%; padding: 0; margin: 0 0 0 20px; font-size: 14px;">提交操作
+            </button>
+        </div>
+
+        <div style="margin: 23px auto">
+            <label class="layui-form-label" style="width: 10%">地区</label>
+            <div class="layui-input-inline" style="width: 76%">
+                <select name="distract" lay-filter="form_distract">
+                    <option value="" selected="selected">地区从属</option>
+                    <option value="渝中区">渝中区</option>
+                    <option value="万州区">万州区</option>
+                    <option value="涪陵区">涪陵区</option>
+                    <option value="大渡口区">大渡口区</option>
+                    <option value="江北区">江北区</option>
+                    <option value="沙坪坝区">沙坪坝区</option>
+                    <option value="九龙坡区">九龙坡区</option>
+                    <option value="南岸区">南岸区</option>
+                    <option value="北碚区">北碚区</option>
+                    <option value="綦江区">綦江区</option>
+                    <option value="大足区">大足区</option>
+                    <option value="渝北区">渝北区</option>
+                    <option value="巴南区">巴南区</option>
+                    <option value="黔江区">黔江区</option>
+                    <option value="长寿区">长寿区</option>
+                    <option value="江津区">江津区</option>
+                    <option value="合川区">合川区</option>
+                    <option value="永川区">永川区</option>
+                    <option value="南川区">南川区</option>
+                    <option value="璧山区">璧山区</option>
+                    <option value="永川区">永川区</option>
+                    <option value="铜梁区">铜梁区</option>
+                    <option value="潼南区">潼南区</option>
+                    <option value="荣昌区">荣昌区</option>
+                    <option value="开州区">开州区</option>
+                    <option value="梁平区">梁平区</option>
+                    <option value="武隆区">武隆区</option>
+                    <option value="城口县">城口县</option>
+                    <option value="丰都县">丰都县</option>
+                    <option value="垫江县">垫江县</option>
+                    <option value="忠县">忠县</option>
+                    <option value="云阳县">云阳县</option>
+                    <option value="奉节县">奉节县</option>
+                    <option value="巫山县">巫山县</option>
+                    <option value="巫溪县">巫溪县</option>
+                    <option value="石柱土家族自治县">石柱土家族自治县</option>
+                    <option value="秀山土家族苗族自治县">秀山土家族苗族自治县</option>
+                    <option value="酉阳土家族苗族自治县">酉阳土家族苗族自治县</option>
+                    <option value="彭水苗族土家族自治县">彭水苗族土家族自治县</option>
+                    <option value="非地区语句">非地区语句</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="margin: 23px auto">
+            <label class="layui-form-label" style="width: 10%">别名</label>
+            <div class="layui-input-inline" style="width: 76%">
+                <input type="text" name="alias" required lay-verify="required" placeholder="请输入别名"
+                       autocomplete="off" class="layui-input" v-model="alias">
+            </div>
+        </div>
+
+        <input type="hidden" name="sql" v-model="sql" id="sql">
+
+        <div style="margin: 23px auto">
+
+            <button @click="insert" onclick="insert()" type="button" class="layui-btn layui-btn-warm"
+                    style="width: 40%; height: 38px; padding: 0; margin: 0 0 0 36px; font-size: 14px;">
+                <i class="layui-icon layui-icon-rate-solid" style="font-size: 14px; color: #FFFFFF"></i>
+                添加到常用语句
+            </button>
+
+            <button @click="reset" onclick="reset()" type="button" class="layui-btn layui-btn-sm"
+                    style="width: 40%; height: 38px; padding: 0; margin: 0 0 0 20px; font-size: 14px;">重置
+            </button>
+
+        </div>
+    </form>
+</div>
+
+<script>
+    layui.use(['form'], function () {
+        layui.form.on('select(form_type)', function (data) {
+            popupWindow.type = data.value
+        })
+        layui.form.on('select(form_distract)', function (data) {
+            popupWindow.distract = data.value
+        })
+    })
+</script>
+
+<script>
+    function child(dataFromFather) {
+        layui.use(['form', 'layer'], function () {
+            popupWindow.sql = dataFromFather
+        })
+    }
+</script>
+
+<script>
+    function getUsername() {
+        var user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {}
+        return user.username
+    }
+
+    function exitWindow() {
+        var index = parent.layer.getFrameIndex(window.name); //获取当前窗口的name
+        parent.layer.close(index);
+    }
+
+    function returnData(res) {
+        var index = parent.layer.getFrameIndex(window.name); //获取当前窗口的name
+        window.parent.getTable(res);//子页面调用
+        parent.layer.close(index);
+    }
+</script>
+
+<script src="../../js/message.min.js"></script>
+<script>
+    var popupWindow = new Vue({
+        el: '#popupWindow_insert',
+        data: {
+            type: '',
+            distract: '',
+            alias: '',
+            sql: '',
+            url1: "http://localhost:9090/table/arbitrarySQL",
+            url2: "http://localhost:9090/Common/insertCommon",
+            username: getUsername(),
+        },
+        updated: function () {
+            layui.use('form', function () {
+                layui.form.render('select');
+            })
+        },
+        methods: {
+            reset() {
+                this.type = ''
+                this.distract = ''
+                this.alias = ''
+            },
+            sql_submit() {
+                if (!this.sql) {
+                    $.message({message: "sql语句不能为空！", type: 'warning'})
+                    return
+                } else if (!this.type) {
+                    $.message({message: "类别不能为空！", type: 'warning'})
+                    return
+                }
+                //发送请求给后台
+                fetch(this.url1, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({sqlType: this.type, sql: this.sql})
+                })
+                    .then(res => res.json())
+                    .then(res => {  //res就是后台返回的结果
+                            console.log(res)
+                            if (res.data != null) {  //判断请求是否成功
+                                if (res.type === '查询') {
+                                    $.message({message: "成功查询 " + res.data.length + " 条数据！", type: 'success'})
+                                    setTimeout(() => {
+                                        returnData(res)
+                                    }, 1000)
+                                }
+                                if (res.type === '新增') {
+                                    $.message({message: "成功新增 " + res.data + " 条数据！", type: 'success'})
+                                    setTimeout(() => {
+                                        exitWindow()
+                                    }, 1000)
+                                }
+                                if (res.type === '修改') {
+                                    $.message({message: "成功修改 " + res.data + " 条数据！", type: 'success'})
+                                    setTimeout(() => {
+                                        exitWindow()
+                                    }, 1000)
+                                }
+                                if (res.type === '删除') {
+                                    $.message({message: "成功删除 " + res.data + " 条数据！", type: 'success'})
+                                    setTimeout(() => {
+                                        exitWindow()
+                                    }, 1000)
+                                }
+                            } else {
+                                $.message({message: "操作失败，请检查语句并重试！", type: 'error'})
+                            }
+                        }
+                    )
+            },
+            insert() {
+                console.log(this.type)
+                console.log(this.distract)
+                console.log(this.alias)
+                console.log(this.sql)
+                console.log(this.username)
+                if (!this.sql) {
+                    $.message({message: "sql语句不能为空！", type: 'warning'})
+                    return
+                } else if (!this.type) {
+                    $.message({message: "类别不能为空！", type: 'warning'})
+                    return
+                } else if (!this.distract) {
+                    $.message({message: "地区不能为空！", type: 'warning'})
+                    return
+                } else if (!this.alias) {
+                    $.message({message: "操作别名不能为空！", type: 'warning'})
+                    return
+                }
+                //发送请求给后台
+                fetch(this.url2, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        sqlType: this.type,
+                        distract: this.distract,
+                        alias: this.alias,
+                        sql: this.sql,
+                        username: this.username
+                    })
+                })
+                    .then(res => {  //res就是后台返回的结果
+                        if (res != null) {  //判断请求是否成功
+                            $.message({message: "添加成功！", type: 'success'})
+                            setTimeout(() => {
+                                window.parent.location.reload()
+                                exitWindow()
+                            }, 1000)
+                        } else {
+                            $.message({message: "添加失败，请检查添加内容并重试！", type: 'error'})
+                        }
+                    })
+            }
+            ,
+        }
+    })
+</script>
+
+</body>
+</html>

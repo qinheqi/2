@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <script src="js/vue.min.js"></script>
+    <script src="js/resources.js"></script>
+    <script src="layui/layui.js"></script>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <style>
+        body {
+            background: url("css/Images/background.png") no-repeat;
+            background-size: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+
+    <div style="background-color: #ffffff; width: 350px; height: 260px; margin: 160px auto; text-align: center;
+    border: 1px solid #dedede; padding: 25px 25px; border-radius: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, .2);">
+
+        <div style="margin: 20px auto; text-align: center; color: #0c63e4"><h1 style="font-size:23px;">重邮运维管理系统</h1>
+        </div>
+
+        <form class="layui-form layui-form-pane" action="">
+            <div class="layui-form-item" style="height: 37px; width: 309px; margin:17px 24px; text-align: center;">
+                <label class="layui-form-label" style="height: 35px; width: 35px; padding: 1px 1px; line-height: 30px;
+                border-width: 1px; background-color: #E8E8E8; border-color: #E1E1E1" >
+                    <img src="css/Images/username.png" style="width: 13px; height: 13px;">
+                </label>
+                <div class="layui-input-inline" style="width: 265px; height: 35px; font-size: 12px;">
+                    <input type="text" name="username" lay-verify="required" placeholder="用户名" autocomplete="off"
+                           class="layui-input" v-model="username" style="height: 35px; padding: 8px; border-color: #E1E1E1">
+                </div>
+            </div>
+        </form>
+
+        <form class="layui-form layui-form-pane" action="">
+            <div class="layui-form-item" style="height: 37px; width: 309px; margin: 8px 24px; text-align: center;">
+                <label class="layui-form-label" style="height: 35px; width: 35px; padding: 1px 1px; line-height: 30px;
+                border-width: 1px; background-color: #E8E8E8; border-color: #E1E1E1">
+                    <img src="css/Images/password.png" style="width: 13px; height: 13px;">
+                </label>
+                <div class="layui-input-inline" style="width: 265px; height: 35px; font-size: 12px;">
+                    <input type="password" name="password" lay-verify="required" placeholder="密码" autocomplete="off"
+                           class="layui-input" v-model="password" style="height: 35px; padding: 8px; border-color: #E1E1E1">
+                </div>
+            </div>
+        </form>
+
+        <div style="position: relative; top: 10px; text-align: center">
+            <button @click="login" onclick="login()" type="button" class="layui-btn" style="width:300px;
+            height:35px; padding: 4px 4px; font-size: 15px; background-color: #0c63e4;line-height: 10px;">登录</button>
+        </div>
+
+        <div style="color: #6c757d; text-align: right; position: relative; top: 20px; right: 25px;
+         font-size: 15px"><a href="register.html">前往注册</a></div>
+
+    </div>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                username: '',
+                password: ''
+            }
+        },
+        methods: {
+            login() {
+                console.log(this.username)
+                console.log(this.password)
+                if (!this.username || !this.password) {
+                    $.message({message: "账号密码不能为空！", type: 'warning'})
+                    return
+                }
+                //发送请求给后台
+                fetch("user/login", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                        //json是一种数据交互格式，比如{“name”:"wrc"}就是一个json对象
+                        //比如{“name”:"wrc"},{“name”:"zhy"}就是一个json数组
+                    },
+                    body: JSON.stringify({username: this.username, password: this.password})
+                    //请求发送的数据放在body里,JSON.stringfy可以把js对象转成所需json
+                })
+                    .then(res => res.json())
+                    .then(res => {  //res就是后台返回的结果
+                        if (res.code === '200') {  //判断请求是否成功
+                            $.message({message: "登录成功！", type: 'success'})
+                            localStorage.setItem("user", JSON.stringify(res.data)) //利用浏览器全局储存用户信息
+                            setTimeout(() => {
+                                location.href = '/index.html'
+                            }, 1000)
+
+                        } else {
+                            $.message({message: "账号或密码不正确！", type: 'error'})
+                        }
+                    })
+            }
+
+        }
+    })
+</script>
+
+
+</body>
+</html>

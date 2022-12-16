@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>用户信息</title>
+    <link rel="stylesheet" href="../../layui/css/layui.css" media="all">
+</head>
+<style>.table-blue .layui-laypage .layui-laypage-curr .layui-laypage-em {
+    background-color: #1E9FFF
+}</style>
+<body>
+
+<script src="../../layui/layui.js"></script>
+
+<div class="popupNrdiv">
+    <!-- 查询条件 -->
+    <div class="layui-card" style="border: 1px solid #E8E8E8">
+        <div class="layui-card-body" style="height: 50px;">
+            <form action="" method="post" id="queryForm" name="queryForm"
+                  class="layui-form layui-form-pane1">
+                <div class="layui-form-item" style="margin: 5px;">
+                    <div class="layui-row">
+                        <div class="layui-col-md1">
+                            <label class="layui-form-label"
+                                   style="width: 57%; right:35%; margin: auto;">类别</label>
+                        </div>
+                        <div class="layui-col-md8">
+                            <div class="layui-row">
+                                <div class="layui-col-md4">
+                                    <div class="layui-input-inline" style="width: 98%; right:16%">
+                                        <select name="quiz1">
+                                            <option value="" selected="selected">类型</option>
+                                            <option value="查询">查询</option>
+                                            <option value="新增">新增</option>
+                                            <option value="修改">修改</option>
+                                            <option value="删除">删除</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <div class="layui-input-inline" style="width: 98%; right:10%">
+                                        <select name="quiz2">
+                                            <option value="" selected="selected">类别</option>
+                                            <option value="查询">查询</option>
+                                            <option value="新增">新增</option>
+                                            <option value="修改">修改</option>
+                                            <option value="删除">删除</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md4">
+                                    <div class="layui-input-inline" style="width: 98%; right: 4%">
+                                        <select name="quiz3" lay-verify="required" lay-search="">
+                                            <option value="">直接选择或搜索选择</option>
+                                            <option value="查询">查询</option>
+                                            <option value="新增">新增</option>
+                                            <option value="修改">修改</option>
+                                            <option value="删除">删除</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md3">
+                            <button type="button" class="layui-btn layui-btn-sm"
+                                    onclick="query()" style="width: 46%; height: 38px; padding: 0; font-size: 14px;
+                                    position: relative; left: 2%">查询
+                            </button>
+                            <button type="reset" class="layui-btn layui-btn-sm"
+                                    style="width: 46%; height: 38px; padding: 0; font-size: 14px; position: relative;
+                                    left: 4%">重置
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="layui-card" style="border: 1px solid #E8E8E8">
+        <div class="layui-card-body" style="height: 110px;">
+            <div class="layui-row">
+                <div class="layui-col-md10">
+                    <div class="layui-input-block" style="width: 100%; margin: 5px auto;">
+                        <textarea placeholder="请输入SQL语句" class="layui-textarea" style="resize:none;"></textarea>
+                    </div>
+                </div>
+                <div class="layui-col-md2">
+                    <button type="button" class="layui-btn layui-btn-warm" onclick="query()"
+                            style="width: 92%; height: 35px; padding: 0; margin: 5px 0 0 0; line-height: 30px;
+                            position: relative; left: 8%">
+                        <i class="layui-icon layui-icon-rate-solid" style="font-size: 14px; color: #FFFFFF"></i>
+                        添加到常用
+                    </button>
+                    <button type="button" class="layui-btn layui-btn-normal" onclick="query()"
+                            style="width: 92%; height: 55px; padding: 0; line-height: 30px; margin: 10px 0 0 0;
+                             position: relative; left: 8%">直接提交
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 查询条件 end -->
+    <!-- 查询结果 -->
+    <div class="layui-card table-blue" style="border: 1px solid #E8E8E8">
+        <div class="layui-card-body">
+            <table class="layui-table"
+                   lay-data="{height:315, url:'http://localhost:9090/user/all', page:true, id:'test'}"
+                   lay-filter="test">
+                <thead>
+                <tr>
+                    <th lay-data="{field:'id', width:80, sort: true}">ID</th>
+                    <th lay-data="{field:'username', width:80}">用户名</th>
+                    <th lay-data="{field:'sex', width:80, sort: true}">性别</th>
+                    <th lay-data="{field:'password'}">密码</th>
+                    <th lay-data="{field:'email'}">邮箱</th>
+                    <th lay-data="{field:'phone', sort: true}">手机</th>
+                    <th lay-data="{field:'avatar', sort: true}">端口</th>
+                    <th lay-data="{field:'time'}">时间</th>
+                </tr>
+                </thead>
+            </table>
+
+            <script type="text/html" id="barTable">
+                <a class="layui-btn layui-btn-xs" lay-event="update">修改</a>
+            </script>
+        </div>
+        <!-- 查询结果 end -->
+    </div>
+</div>
+
+</body>
+</html>
