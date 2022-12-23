@@ -2,10 +2,7 @@ package com.ruocheng.springboot.Common;
 
 import lombok.Data;
 
-/**
- * 封装统一返回结果
- * @param <T>
- */
+//统一返回封装结果
 @Data
 public class Result<T> {
     private String code;
