@@ -1,15 +1,22 @@
 package com.ruocheng.springboot.Controller;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.ruocheng.springboot.Common.AuthFilter;
+import com.ruocheng.springboot.Common.Result;
 import com.ruocheng.springboot.Mapper.CommonMapper;
 import com.ruocheng.springboot.entity.Common;
+import com.ruocheng.springboot.entity.User;
 import com.ruocheng.springboot.service.CommonService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -25,28 +32,28 @@ public class CommonController {
     private CommonService commonService;
 
     @ResponseBody
-    public AuthFilter.LayuiTableData findCommonAll() {
+    public LayuiTableData findCommonAll() {
         // 查询数据库获取数据
         List<Common> findAll = commonService.findAll();
         // 调用并返回LayuiTableData处理数据 此数据符合layui表格渲染的要求
-        return AuthFilter.LayuiTableData.layData(findAll.size(), findAll);
+        return LayuiTableData.layData(findAll.size(), findAll);
     }
 
     @GetMapping("/all")
-    public AuthFilter.LayuiTableData findAll() {
+    public LayuiTableData findAll() {
         return findCommonAll();
     }
 
     @ResponseBody
-    public AuthFilter.LayuiTableData selectCommon(String sqlType, String distract, String alias) {
+    public LayuiTableData selectCommon(String sqlType, String distract, String alias) {
         // 查询数据库获取数据
         List<Common> housing = commonMapper.selectCommon(sqlType, distract, alias);
         // 调用并返回LayuiTableData处理数据 此数据符合layui表格渲染的要求
-        return AuthFilter.LayuiTableData.layData(housing.size(), housing);
+        return LayuiTableData.layData(housing.size(), housing);
     }
 
     @PostMapping("/selectCommonAll")
-    public AuthFilter.LayuiTableData selectCommonAll(@RequestBody String userStr) {
+    public LayuiTableData selectCommonAll(@RequestBody String userStr) {
 
         JSONObject userObj = JSONUtil.parseObj(userStr);
 
