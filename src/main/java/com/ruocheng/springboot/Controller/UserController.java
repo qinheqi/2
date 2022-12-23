@@ -1,10 +1,8 @@
 package com.ruocheng.springboot.Controller;
 
-import cn.hutool.core.io.IoUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import cn.hutool.poi.excel.ExcelUtil;
-import cn.hutool.poi.excel.ExcelWriter;
+import com.ruocheng.springboot.Common.AuthFilter;
 import com.ruocheng.springboot.Common.Result;
 import com.ruocheng.springboot.Mapper.UserMapper;
 import com.ruocheng.springboot.entity.User;
@@ -12,17 +10,12 @@ import com.ruocheng.springboot.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @RestController//接口所有查询的数据会被渲染成json.返回
@@ -36,15 +29,15 @@ public class UserController {
     private UserService userService;
 
     @ResponseBody
-    public LayuiTableData findUserAll(){
+    public AuthFilter.LayuiTableData findUserAll(){
         // 查询数据库获取数据
         List<User> findAll = userService.findAll();
         // 调用并返回LayuiTableData处理数据 此数据符合layui表格渲染的要求
-        return LayuiTableData.layData(findAll.size(), findAll);
+        return AuthFilter.LayuiTableData.layData(findAll.size(), findAll);
     }
 
     @GetMapping("/all")
-    public LayuiTableData findAll(){
+    public AuthFilter.LayuiTableData findAll(){
         return findUserAll();
     }
 
