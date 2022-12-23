@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>登录</title>
+    <title>注册</title>
+    <link rel="shortcut icon" href="css/Images/icon.png">
     <script src="js/vue.min.js"></script>
     <script src="js/resources.js"></script>
     <script src="layui/layui.js"></script>
@@ -23,7 +24,7 @@
 <body>
 <div id="app">
 
-    <div style="background-color: #ffffff; width: 350px; height: 370px; margin:110px auto; text-align: center;
+    <div style="background-color: #ffffff; width: 350px; height: 375px; margin:230px auto; text-align: center;
     border: 1px solid #dedede; padding: 25px 25px; border-radius: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, .2);">
 
         <div style="margin: 5px auto; text-align: center; color: #00843D"><h1 style="font-size:23px;">注册</h1>
@@ -185,8 +186,21 @@
                             $.message({message: "注册失败，请重试！", type: 'error'})
                         }
                     })
+            },
+            keyDown (e) {
+                // 回车则执行登录方法 enter键的ASCII是13
+                if (e.keyCode === 13) {
+                    this.Register() // 需要执行的方法方法
+                }
             }
-
+        },
+        // 绑定监听事件
+        mounted () {
+            window.addEventListener('keydown', this.keyDown)
+        },
+        // 销毁事件
+        destroyed () {
+            window.removeEventListener('keydown', this.keyDown, false)
         }
     })
 </script>

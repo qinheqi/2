@@ -2,184 +2,164 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>左侧导航栏</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <link rel="stylesheet" type="text/css" href="css/page.css" />
-    <link href="layui/css/layui.css" rel="stylesheet" type="text/css" />
-    <link href="css/icons.min.css" rel="stylesheet" type="text/css" />
- </head>
+    <title>运维综合管理系统</title>
+    <link rel="shortcut icon" href="../css/Images/icon.png">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="css/page.css"/>
+    <link href="layui/css/layui.css" rel="stylesheet" type="text/css"/>
+    <link href="css/icons.min.css" rel="stylesheet" type="text/css"/>
+    <script src="js/resources.js"></script>
+    <script src="layui/layui.js"></script>
+    <script src="js/message.min.js"></script>
+    <link href="css/theme.css" rel="stylesheet" type="text/css"/>
+</head>
+<style>
+    .layui-nav {
+        background-color: var(--layui-nav);
+        box-shadow: 10px 0px 17px rgba(72, 72, 72, 0.1);
+    }
+
+    .layui-nav .layui-this:after, .layui-nav-bar {
+        background-color: #FFFFFF;
+    }
+
+    .layui-nav .layui-nav-item a {
+        color: #ffffff;
+    }
+
+    .layui-this > a {
+        background-color: #FFFFFF;
+        color: var(--layui-this) !important;
+        font-size: 13px;
+    }
+
+    .layui-nav-child {
+        background-color: var(--layui-nav-child);
+    }
+    .layui-nav-child dd.layui-this {
+        background-color: #F6F6F6;
+        color: #000000;
+    }
+    body {
+        min-height: 100%;
+        margin-top: 0;
+        margin-bottom: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .layui-laypage .layui-laypage-curr .layui-laypage-em {
+        background-color: var(--layui-laypage-em);
+    }
+
+    footer{
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+        height: 100px;
+        text-align: center;
+        flex-grow: 1;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        background-color: var(--footer-color);
+    }
+
+    .specialGreen {
+        background-color: var(--specialGreen-background) !important;
+        color:var(--specialGreen-color) !important;
+    }
+
+</style>
 <body>
-
-<script src="js/resources.js"></script>
-<script src="layui/layui.js"></script>
-<script src="js/message.min.js"></script>
-
-<div class="page" id="app" style="width:96.8%">
-    <div class="nav-left" v-show="navLeftFlag" ref="navLeft">
-        <div class="navDiv">
-            <div class="navName">导航</div>
-            <div class="nav-list" style="position:relative; width:258px; left: -18px;">
-                <ul>
-                    <li class="nav-tab a_active waves-effect">
-                        <a href="home.html" class="li-a active" target="iframe"><i class='bx bx-home-smile'></i> 主页
-                            <span class="layui-badge" style="float: right; background-color: #0c63e4;
-                            position: relative; top: 2px; right: 4px; color: #FFFFFF">3</span>
-                        </a>
-                    </li>
-                    <!-- <li class="nav-tab">
-                        <a href="#" class="li-a"><i class='bx bx-home-smile'></i> 设备管理</a>
-                    </li> -->
-                    <li class="nav-tab nav-ul">
-                        <a href="javascript:void[0]" class="li-a"><i class='bx bx-search'></i> 数据查询
-                            <i class='bx bx-chevron-right' style="float: right;"></i></a>
-                        <div class="nav-box">
-                            <a href="html/device/search.html" class="li-a-a" target="iframe">分类检索</a>
-                        </div>
-                    </li>
-                    <li class="nav-tab nav-ul">
-                        <a href="javascript:void[0]" class="li-a"><i class='bx bx-edit'></i> 数据管理
-                            <i class='bx bx-chevron-right' style="float: right;"></i></a>
-                        <div class="nav-box">
-                            <a href="html/device/administration_fore.html" class="li-a-a" target="iframe">前台管理</a>
-                        </div>
-                        <div class="nav-box">
-                            <a href="html/device/administration_back.html" class="li-a-a" target="iframe">后台管理</a>
-                        </div>
-                    </li>
-                    <li class="nav-tab nav-ul">
-                        <a href="javascript:void[0]" class="li-a" target="iframe"><i class='bx bx-layer'></i> 权限管理
-                            <i class='bx bx-chevron-right' style="float: right;"></i></a>
-                        <div class="nav-box">
-                            <a href="html/device/user.html" class="li-a-a" target="iframe">用户信息</a>
-                        </div>
-                    </li>
-                    <li class="nav-tab nav-ul">
-                        <a href="javascript:void[0]" class="li-a"><i class='bx bx-cog'></i> 界面设置
-                            <i class='bx bx-chevron-right' style="float: right;"></i></a>
-                        <div class="nav-box">
-                            <a href="html/device/theme.html" class="li-a-a" target="iframe">主题样式</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div class="nav-right" ref="navRight">
-        <div class="nav-top">
-
-            <button type="button" class="layui-btn layui-btn-normal" style="line-height: 10px; width: 27px;
-            height: 24px; padding: 0; background-color: #0d6efd" @click="isShowLeft">
-                <i class="layui-icon layui-icon-app" style="font-size: 14px; margin: 5px auto; color: #FFFFFF;"></i>
-            </button>
-
-            <!-- <button type="button" class="btn btn-primary btn-sm showBtn" style="line-height: 10px; display: none;" onclick="showNavRight">
-                <i class="bx bx-expand" style="font-size: 16px;"></i>
-            </button> -->
-        </div>
-
-        <div class="content-page" ref="cPage">
-            <iframe name="iframe" width="100%" height="100%" frameborder="0" src="home.html"></iframe>
-        </div>
-
-    </div>
+<!--顶部logo栏-->
+<div style="height: 70px; width: 100%; background-color: #FFFFFF; box-shadow: 10px 0 17px rgba(72, 72, 72, 0.1);">
+    <img src="css/Images/logo.png" style="width: 600px; height: 55px; margin: 7px auto">
 </div>
-
-<script src="js/jquery-3.6.0.min.js"></script>
-<script src="js/vue.min.js"></script>
-<div style="width: 150px; position: relative; left: 87%; bottom: 48px; z-index: 200;font-size: 14px;">
-    <ul class="layui-nav" style="height: 32px; width: 100px; border-radius: 16px; background-color: #ffffff;
-    border: 1px solid #6c757d; font-size: 10px; text-align: center; margin: 0 auto;">
-        <li class="layui-nav-item" style="text-align: center; width: 85px; height: 30px;">
-            <a href="javascript:;" style="width: 100px; height: 30px; color: #6c757d; font-size: 15px;
-             margin: 10px 0; position: relative; right: 50px; bottom: 24px;">个人信息
-                <i class="layui-icon layui-icon-down layui-nav-more" style="right: 20px"></i>
-            </a>
-            <dl class="layui-nav-child" style="width: 100px; left: -22px; top: 32px;">
-                <dd id="user"><a><div style="height: 20px; margin: 5px auto; display:flex; align-items:center;
-                justify-content: center;"><b>{{ user.username }}</b></div></a></dd>
-                <hr>
-                <dd><a href="html/device/theme.html" target="iframe">个人信息</a></dd>
-                <dd><a style="cursor:pointer;" @click="findAll" onclick="findAll()">修改密码</a></dd>
-                <dd><a style="cursor:pointer;" @click="logout" onclick="logout()">退出登录</a></dd>
+<div style="width:100%; height: 100%">
+    <ul class="layui-nav">
+        <li class="layui-nav-item layui-this"><a class="specialGreen" href="home.html" target="iframe"><p style="font-size: 15px; color: #FFFFFF">主页</p></a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="javascript:;"><p style="font-size: 15px;"><i class='bx bx-search'></i> 数据查询</p></a>
+            <dl class="layui-nav-child">
+                <dd><a href="html/device/search.html" target="iframe">分类检索</a></dd>
             </dl>
         </li>
+        <li class="layui-nav-item">
+            <a href="javascript:;"><p style="font-size: 15px;"><i class='bx bx-edit'></i> 数据管理</p></a>
+            <dl class="layui-nav-child">
+                <dd><a href="html/device/administration_fore.html" class="li-a-a" target="iframe">前台管理</a></dd>
+                <dd><a href="html/device/administration_back.html" class="li-a-a" target="iframe">后台管理</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item">
+            <a href="javascript:;"><p style="font-size: 15px;"><i class='bx bx-layer'></i> 权限管理</p></a>
+            <dl class="layui-nav-child">
+                <dd><a href="html/device/user.html" class="li-a-a" target="iframe">用户信息</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item">
+            <a href="javascript:;"><p style="font-size: 15px;"><i class='bx bx-cog'></i> 界面设置</p></a>
+            <dl class="layui-nav-child">
+                <dd><a onclick="theme()" class="li-a-a" target="iframe">主题样式</a></dd>
+            </dl>
+        </li>
+        <div style="width: 150px; position: absolute; left: 92%; bottom: 15px; z-index: 200;font-size: 14px;">
+            <ul class="layui-nav" style="height: 30px; width: 100px; border-radius: 16px; background-color: #ffffff;
+        font-size: 10px; text-align: center; margin: 0 auto;">
+                <li class="layui-nav-item" style="text-align: center; width: 85px; height: 30px;">
+                    <a href="javascript:;" style="width: 100px; height: 30px; color: #6c757d; font-size: 15px;
+             margin: 10px 0; position: relative; right: 50px; bottom: 24px;">个人信息
+                        <i class="layui-icon layui-icon-down layui-nav-more" style="right: 20px"></i>
+                    </a>
+                    <dl class="layui-nav-child" style="width: 100px; left: -22px; top: 32px; background-color: #FFFFFF;">
+                        <dd id="user"><a>
+                            <div style="height: 20px; margin: 5px auto; display:flex; align-items:center;
+                            justify-content: center; color: #6c757d"><b>{{ user.username }}</b></div>
+                        </a></dd>
+                        <hr>
+                        <dd><a style="cursor:pointer; color: #6c757d" onclick="submitCommon()">个人信息</a></dd>
+                        <dd><a style="cursor:pointer; color: #6c757d" @click="findAll" onclick="updatePassword()">修改密码</a></dd>
+                        <dd><a style="cursor:pointer; color: #6c757d" @click="logout" onclick="logout()">退出登录</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
     </ul>
 
-<!--    <div class="dropdown">-->
-<!--        <span class="dropdown-toggle" data-bs-toggle="dropdown" style="margin: 5px; cursor: pointer;-->
-<!--        border: 1px solid #dedede; padding: 5px 12px; border-radius: 15px;">个人信息</span>-->
-<!--        <ul class="dropdown-menu" style="line-height: 20px; width: 94px; text-align: center;font-size: 12px;">-->
-<!--            <li><a class="dropdown-item" href="html/device/theme.html" class="li-a-a" target="iframe">个人信息</a></li>-->
-<!--            <li><a class="dropdown-item" href="html/device/theme.html" class="li-a-a" target="iframe">修改密码</a></li>-->
-<!--            <li><a class="dropdown-item" @click="logout" onclick="logout()" class="li-a-a" target="iframe">退出登录</a></li>-->
-<!--        </ul>-->
-<!--    </div>-->
+    <div class="content-page" ref="cPage">
+        <iframe name="iframe" src="home.html" frameborder="0" style="width: 100%; height: 99%; vertical-align: bottom;"></iframe>
+    </div>
+
 </div>
 
-<script src="js/vue.min.js"></script>
-<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
-<script type="text/javascript">
-    $(function() {
-        let navflag = false;
-        $('.nav-tab').click(function() {
-            $(this).siblings().each(function() {
-                $(this).removeClass('a_active');
-                // $(this).removeClass('a_active');
-                $(this).find('.nav-box').css('height', '0')
-                //关闭右侧箭头
-                if ($(this).attr('class').indexOf('nav-ul') != -1) {
-                    $(this).find('.bx-chevron-right').css('transform', 'rotateZ(0deg)')
-                    $(this).find('.bx-chevron-right').css('transition', 'all .5s')
-                    $(this).removeClass('nav-show')
-                    // $(this).find('div').removeClass('nav-box')
-                }
-            })
-            //当前选中
-            $(this).addClass('a_active')
-            $(this).find('.li-a').addClass('active')
-            // 打开右侧箭头
-            $(this).find('.bx-chevron-right').css('transform', 'rotateZ(90deg)')
-            $(this).find('.bx-chevron-right').css('transition', 'all .5s')
-            $(this).addClass('nav-show')
-            // $(this).find('div').addClass('nav-box')
-        })
-        /* 二级菜单a点击事件 */
-        $(".li-a-a").click(function() {
-            $(".li-a-a").each(function() {
-                $(this).removeClass('active-li-a');
-            })
-            $(this).addClass('active-li-a');
-        })
+<script>
+    document.body.style.setProperty('--footer-color',  '#016946');
+    document.body.style.setProperty('--layui-laypage-em',  '#016946');
+    document.body.style.setProperty('--layui-nav-child',  '#016946');
+    document.body.style.setProperty('--layui-this',  '#016946');
+    document.body.style.setProperty('--layui-nav',  '#016946');
+    document.body.style.setProperty('----specialGreen-background',  '#016946');
+    document.body.style.setProperty('----specialGreen-color',  '#FFFFFF');
+</script>
 
-    })
-    const vue = new Vue({
-        el: '#app',
-        data: {
-            navLeftFlag: true
-        },
-        methods: {
-            isShowLeft() {
-                if (this.navLeftFlag ) {
-                    this.$refs.navRight.style.paddingLeft = '0px'
-                    this.$refs.cPage.style.left = '0px';
-                    this.navLeftFlag = false;
-                    // this.$refs.navLeft.style.width = '0px';
-                    // setTimeout(()=>{
-                    // 	this.navLeftFlag = false;
-                    // },200)
-                } else {
-                    this.$refs.navRight.style.paddingLeft = '240px';
-                    this.$refs.cPage.style.left = '240px';
-                    this.navLeftFlag = true;
-                    // this.$refs.navLeft.style.width = '240px';
-                    // setTimeout(()=>{
-                    // 	this.navLeftFlag = true;
-                    // },200)
-                }
-            }
+<script type="text/javascript">
+    layui.use('jquery', function () {
+        var $ = layui.jquery;
+        FrameWH();
+
+        function FrameWH() {
+            var h = $(window).height() - 134;
+            $("iframe").css("height", h + "px");
         }
-    })
+
+        $(window).resize(function () {
+            FrameWH();
+        });
+
+    });
 </script>
 
 <script>
@@ -192,8 +172,7 @@
         },
         created() {
         },
-        methods: {
-        }
+        methods: {}
     })
 </script>
 
@@ -214,6 +193,91 @@
             })
     }
 </script>
+
+<script>
+    function submitCommon() {
+        var layer = layui.layer;
+        layer.open({
+            title: '个人信息',
+            type: 2,
+            area: ['430px', '300px'],
+            content: 'html/device/popupWindow_personal.html',
+            scrollbar: false,
+            success: function (layero, index) {
+                // 获取子页面的iframe
+                var iframe = window['layui-layer-iframe' + index];
+                // 向子页面的全局函数child传参
+                iframe.child(JSON.parse(localStorage.getItem("user")).id, JSON.parse(localStorage.getItem("user")).username, JSON.parse(localStorage.getItem("user")).sex,
+                    JSON.parse(localStorage.getItem("user")).password, JSON.parse(localStorage.getItem("user")).email, JSON.parse(localStorage.getItem("user")).phone);
+            }
+        });
+    }
+    function updatePassword() {
+        var layer = layui.layer;
+        layer.open({
+            title: '修改密码',
+            type: 2,
+            area: ['430px', '340px'],
+            content: 'html/device/popupWindow_updatePassword.html',
+            scrollbar: false,
+            success: function (layero, index) {
+                // 获取子页面的iframe
+                var iframe = window['layui-layer-iframe' + index];
+                // 向子页面的全局函数child传参
+                iframe.child(JSON.parse(localStorage.getItem("user")).id, JSON.parse(localStorage.getItem("user")).username, JSON.parse(localStorage.getItem("user")).sex,
+                    JSON.parse(localStorage.getItem("user")).password, JSON.parse(localStorage.getItem("user")).email, JSON.parse(localStorage.getItem("user")).phone);
+            }
+        });
+    }
+    function theme() {
+        var layer = layui.layer;
+        layer.open({
+            title: '主题样式',
+            type: 2,
+            area: ['430px', '250px'],
+            content: 'html/device/popupWindow_theme.html',
+            scrollbar: false
+        });
+    }
+    function theme_blue(){
+        document.body.style.setProperty('--footer-color',  '#1e9fff');
+        document.body.style.setProperty('--layui-laypage-em',  '#1e9fff');
+        document.body.style.setProperty('--layui-nav-child',  '#1e9fff');
+        document.body.style.setProperty('--layui-this',  '#1e9fff');
+        document.body.style.setProperty('--layui-nav',  '#1e9fff');
+        document.body.style.setProperty('----specialGreen-background',  '#1e9fff');
+        document.body.style.setProperty('----specialGreen-color',  '#FFFFFF');
+    }
+    function theme_green(){
+        document.body.style.setProperty('--footer-color',  '#016946');
+        document.body.style.setProperty('--layui-laypage-em',  '#016946');
+        document.body.style.setProperty('--layui-nav-child',  '#016946');
+        document.body.style.setProperty('--layui-this',  '#016946');
+        document.body.style.setProperty('--layui-nav',  '#016946');
+        document.body.style.setProperty('----specialGreen-background',  '#016946');
+        document.body.style.setProperty('----specialGreen-color',  '#FFFFFF');
+    }
+    function theme_yellow(){
+        document.body.style.setProperty('--footer-color',  'rgb(247, 186, 42)');
+        document.body.style.setProperty('--layui-laypage-em',  'rgb(247, 186, 42)');
+        document.body.style.setProperty('--layui-nav-child',  'rgb(247, 186, 42)');
+        document.body.style.setProperty('--layui-this',  'rgb(247, 186, 42)');
+        document.body.style.setProperty('--layui-nav',  'rgb(247, 186, 42)');
+        document.body.style.setProperty('----specialGreen-background',  'rgb(247, 186, 42)');
+        document.body.style.setProperty('----specialGreen-color',  '#FFFFFF');
+    }
+    function reload(){
+        location.reload();
+    }
+</script>
+
+<footer>
+    <div style="float:left; margin:0 auto; padding:25px 0; font-size: 15px;">
+        <span style="color: #FFFFFF">版权所有  |  重庆邮电大学  |  重庆市南岸区崇文路2号  |  400065</span>
+        <div style="width:300px;margin:0 auto; padding:3px 0;"></div>
+        <p style="color: #FFFFFF">第1组: 王若丞 赵卓凡</p>
+    </div>
+</footer>
 
 </body>
 </html>

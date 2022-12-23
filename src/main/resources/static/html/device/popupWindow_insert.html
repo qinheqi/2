@@ -113,6 +113,7 @@
     </form>
 </div>
 
+<!--由于vue和layui冲突无法双向绑定，故在此手动获取表单数据-->
 <script>
     layui.use(['form'], function () {
         layui.form.on('select(form_type)', function (data) {
@@ -125,27 +126,29 @@
 </script>
 
 <script>
+    //从父页面获取sql语句
     function child(dataFromFather) {
         layui.use(['form', 'layer'], function () {
             popupWindow.sql = dataFromFather
         })
     }
-</script>
 
-<script>
+    //从浏览器获取登录时存入的账号信息
     function getUsername() {
         var user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {}
         return user.username
     }
 
+    //直接关闭弹出层
     function exitWindow() {
         var index = parent.layer.getFrameIndex(window.name); //获取当前窗口的name
         parent.layer.close(index);
     }
 
+    //回传参数并关闭弹出层
     function returnData(res) {
         var index = parent.layer.getFrameIndex(window.name); //获取当前窗口的name
-        window.parent.getTable(res);//子页面调用
+        window.parent.getTable(res);//调用父页面方法
         parent.layer.close(index);
     }
 </script>
@@ -159,8 +162,6 @@
             distract: '',
             alias: '',
             sql: '',
-            url1: "http://localhost:9090/table/arbitrarySQL",
-            url2: "http://localhost:9090/Common/insertCommon",
             username: getUsername(),
         },
         updated: function () {
@@ -169,11 +170,13 @@
             })
         },
         methods: {
+            //重置
             reset() {
                 this.type = ''
                 this.distract = ''
                 this.alias = ''
             },
+            //操作增删改查
             sql_submit() {
                 if (!this.sql) {
                     $.message({message: "sql语句不能为空！", type: 'warning'})
@@ -183,7 +186,7 @@
                     return
                 }
                 //发送请求给后台
-                fetch(this.url1, {
+                fetch("/table/arbitrarySQL", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -191,7 +194,7 @@
                     body: JSON.stringify({sqlType: this.type, sql: this.sql})
                 })
                     .then(res => res.json())
-                    .then(res => {  //res就是后台返回的结果
+                    .then(res => {
                             console.log(res)
                             if (res.data != null) {  //判断请求是否成功
                                 if (res.type === '查询') {
@@ -224,6 +227,7 @@
                         }
                     )
             },
+            //保存为常用语句
             insert() {
                 console.log(this.type)
                 console.log(this.distract)
@@ -244,7 +248,7 @@
                     return
                 }
                 //发送请求给后台
-                fetch(this.url2, {
+                fetch("/Common/insertCommon", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -257,7 +261,7 @@
                         username: this.username
                     })
                 })
-                    .then(res => {  //res就是后台返回的结果
+                    .then(res => {
                         if (res != null) {  //判断请求是否成功
                             $.message({message: "添加成功！", type: 'success'})
                             setTimeout(() => {
