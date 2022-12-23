@@ -26,8 +26,8 @@ public class TableController {
 
     @ResponseBody
     public LayuiTableData ArbitraryTableSQL(String sqlType, String sql) {
-         if(Objects.equals(sqlType, "查询")) {
-             List<HashMap<String, Object>> table = tableService.selectSQL(sql);
+        if(Objects.equals(sqlType, "查询")) {
+            List<HashMap<String, Object>> table = tableService.selectSQL(sql);
             return LayuiTableData.layTypeData(table.size(), table, sqlType);
         }
         else if(Objects.equals(sqlType, "新增")) {
@@ -45,6 +45,11 @@ public class TableController {
         return null;
     }
 
+    /**
+     * 执行任意sql语句
+     * @param arbitraryStr 前端传入的JSON，包含sql类型和sql语句
+     * @return 封装后的执行结果
+     */
     @PostMapping ("/arbitrarySQL")
     public LayuiTableData arbitraryTableSQL(@RequestBody String arbitraryStr) {
 

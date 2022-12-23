@@ -16,9 +16,9 @@ public class SpringbootApplication {
 
     @Bean
     public FilterRegistrationBean<AuthFilter> getFilterRegistrationBean(){
-         FilterRegistrationBean<AuthFilter> bean = new FilterRegistrationBean<>(new AuthFilter());
-         bean.addUrlPatterns("/","*.html");
-         return bean;
+        FilterRegistrationBean<AuthFilter> bean = new FilterRegistrationBean<>(new AuthFilter());
+        bean.addUrlPatterns("/","*.html");
+        return bean;
     }
 
 }

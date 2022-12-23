@@ -18,13 +18,15 @@ public interface UserMapper {
     @Insert("INSERT into user(username, password, email, phone, sex, time) VALUES (#{username},#{password},#{email},#{phone},#{sex},#{time})")
     Integer insertUser(String username, String password, String email, String phone, String sex, String time);
 
-    @Update("update ser set username=#{username},password=#{password},email=#{email},phone=#{phone},sex=#{sex} where id=#{id}")
-    Integer update(User user);
+    //预留，更新用户信息
+    @Update("update user set username=#{username},password=#{password},email=#{email},phone=#{phone},sex=#{sex} where id=#{id}")
+    Integer update(Integer id, String username, String password, String email, String phone, String sex);
 
+    //根据id删除用户
     @Delete("delete from user where id = #{id}")
     Integer deleteById(Integer id);
 
     @Select("select * from user where username=#{username} and password=#{password}")
-    User findPersonMessage(String username,String password);
+    User findPerson(String username,String password);
 
 }

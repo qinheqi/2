@@ -1,9 +1,9 @@
 package com.ruocheng.springboot.Mapper;
-import org.apache.ibatis.annotations.Insert;
 
 import java.util.HashMap;
 import java.util.List;
 
+//实现任意sql语句的执行
 public interface TableMapper {
 
     List<HashMap<String,Object>> select(String sql);

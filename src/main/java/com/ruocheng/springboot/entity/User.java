@@ -6,7 +6,7 @@ import java.sql.Date;
 
 
 @Data//自动实现get方法
-public class User {
+public class    User {
     private Integer id;
     private String username;
     private String sex;
@@ -15,19 +15,6 @@ public class User {
     private String phone;
     @JsonFormat(pattern = "yyyy-MM-dd ", timezone = "GWT+8")
     private Date time;
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", sex='" + sex + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", time=" + time +
-                '}';
-    }
 }
 
 

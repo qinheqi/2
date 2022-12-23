@@ -11,12 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
 
 @RestController//接口所有查询的数据会被渲染成json.返回
 @RequestMapping("/user")
@@ -36,11 +33,21 @@ public class UserController {
         return LayuiTableData.layData(findAll.size(), findAll);
     }
 
+    /**
+     * 查询用户信息
+     * @return 用户信息
+     */
     @GetMapping("/all")
     public LayuiTableData findAll(){
         return findUserAll();
     }
 
+    /**
+     * 登录
+     * @param userStr 前端传入输入的用户信息
+     * @param request 调用request库
+     * @return
+     */
     @PostMapping("/login")
     public Result<User> login(@RequestBody String userStr, HttpServletRequest request) {
         System.out.println(userStr);
@@ -53,11 +60,8 @@ public class UserController {
         String username = userObj.getStr("username");
         String password = userObj.getStr("password");
 
-        //通过JDBC查询数据
-//        User user = JDBCUtil.executeQuery(username, password);
-
         //通过Mybatis查询数据
-        User user = userMapper.findPersonMessage(username, password);
+        User user = userMapper.findPerson(username, password);
         if (user != null) { //用户合法
             request.getSession().setAttribute("user", user); //读取用户信息
             return Result.success(user);
@@ -66,19 +70,19 @@ public class UserController {
         }
     }
 
+    /**
+     * 登出
+     * @param request 调用request库
+     * @return 登出结果
+     */
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String logout(HttpServletRequest request) {
         request.getSession().removeAttribute("user");
         if (request.getSession().getAttribute("user") == null) {
             return "SUCCESS";
         } else {
             return "FAIL";
         }
-    }
-
-    @DeleteMapping("/{id}")
-    public Integer delete(@PathVariable Integer id) {
-        return userMapper.deleteById(id);
     }
 
     public String StringToLocalDateTime(){
@@ -89,6 +93,11 @@ public class UserController {
         return localDateTime.format(formatter);
     }
 
+    /**
+     * 注册
+     * @param userStr 前端传入的用户信息
+     * @return 注册结果
+     */
     @PostMapping("/register")
     public Result<Integer> insertUser(@RequestBody String userStr){
 
@@ -103,10 +112,53 @@ public class UserController {
         String time = StringToLocalDateTime();
 
         Integer result = userService.insertUser(username, password, email, phone, sex, time);
-        if (result != null) { //用户合法
+        if (result != null) {
             return Result.success(result);
         } else {
-            return Result.error("账号或密码错误！");
+            return Result.error("注册失败！");
+        }
+    }
+
+    /**
+     * 登录
+     * @param userStr 前端传入输入的用户信息
+     * @return 删除结果
+     */
+    @PostMapping("/deleteById")
+    public Integer deleteById(@RequestBody String userStr) {
+        System.out.println(userStr);
+        JSONObject userObj = JSONUtil.parseObj(userStr);
+
+        // 方法2.直接从json对象获取属性
+        Integer id = userObj.getInt("id");
+
+        //通过Mybatis查询数据
+        return userService.deleteById(id);
+    }
+
+    /**
+     * 编辑
+     * @param userStr 前端传入的用户信息
+     * @return 编辑结果
+     */
+    @PostMapping("/update")
+    public Result<Integer> updateUser(@RequestBody String userStr){
+
+        System.out.println(userStr);
+        JSONObject userObj = JSONUtil.parseObj(userStr);
+
+        Integer id = userObj.getInt("id");
+        String username = userObj.getStr("username");
+        String password = userObj.getStr("password");
+        String email = userObj.getStr("email");
+        String phone = userObj.getStr("phone");
+        String sex = userObj.getStr("sex");
+
+        Integer result = userService.update(id, username, password, email, phone, sex);
+        if (result != null) {
+            return Result.success(result);
+        } else {
+            return Result.error("编辑失败！");
         }
     }
 }
