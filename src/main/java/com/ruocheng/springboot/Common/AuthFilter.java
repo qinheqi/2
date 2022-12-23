@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
+/**
+ * 过滤器，用于过滤非法请求
+ */
 public class AuthFilter implements Filter {
 
     private static final String[] WHITE_URLS = {"/login.html","/register.html"};
@@ -22,7 +25,7 @@ public class AuthFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String servletPath = request.getServletPath();
-        if(Arrays.stream(WHITE_URLS).anyMatch(url -> url.equals(servletPath)) || endWith(servletPath)){
+        if(Arrays.asList(WHITE_URLS).contains(servletPath) || endWith(servletPath)){
             filterChain.doFilter(request,response); //放行请求
         } else {
             Object user = request.getSession().getAttribute("user");
