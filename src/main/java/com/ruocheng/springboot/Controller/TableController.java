@@ -2,6 +2,7 @@ package com.ruocheng.springboot.Controller;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.ruocheng.springboot.Common.LayuiTableData;
 import com.ruocheng.springboot.Mapper.TableMapper;
 import com.ruocheng.springboot.service.TableService;
 import org.springframework.web.bind.annotation.*;
